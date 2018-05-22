@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Illuminate\Http\Request;
 // add
 use App\Car;
+// add
+use Validator;
 class CarsController extends Controller
 {
     /**
@@ -35,7 +37,23 @@ class CarsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {  
+        $validator = Validator::make($request->all(), [
+            'brand' => 'required|min:2',
+            'model' => 'required|min:2',
+            'year' => 'required',
+            'maxSpeed' => 'between:20,300',
+            'isAutomatic' => 'required',
+            'engine' => 'required',
+            'numberOfDoors' => 'required|between:2,5'
+           
+        ]);
+        if ($validator->fails()) {
+            return new JsonResponse("Fail:check the entered parameters!");
+        }
+
+
+
         $car = new Car();
         $car->brand = $request->input('brand');
         $car->model = $request->input('model');
