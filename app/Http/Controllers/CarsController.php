@@ -15,10 +15,22 @@ class CarsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-       return Car::all();
+    // public function index()
+    // {
+    //    return Car::all();
+    // }
+
+    public function index(Request $request) {
+        if ($request->query('take') && $request->query('skip')) {
+            return Car::skip($request->query('skip'))->take($request->query('take'))->get();
+        } else {
+            return Car::all();
+        }
     }
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
