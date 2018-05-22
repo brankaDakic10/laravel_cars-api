@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+// add
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Illuminate\Http\Request;
-
+// add
+use App\Car;
 class CarsController extends Controller
 {
     /**
@@ -13,7 +15,7 @@ class CarsController extends Controller
      */
     public function index()
     {
-        //
+       return Car::all();
     }
 
     /**
@@ -34,7 +36,17 @@ class CarsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $car = new Car();
+        $car->brand = $request->input('brand');
+        $car->model = $request->input('model');
+        $car->year = $request->input('year');
+        $car->maxSpeed = $request->input('maxSpeed');
+        $car->isAutomatic = $request->input('isAutomatic');
+        $car->engine = $request->input('engine');
+        $car->numberOfDoors = $request->input('numberOfDoors');
+        $car->save();
+
+        return $car;
     }
 
     /**
@@ -45,7 +57,7 @@ class CarsController extends Controller
      */
     public function show($id)
     {
-        //
+        return Car::find($id);
     }
 
     /**
@@ -68,7 +80,17 @@ class CarsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $car = Car::find($id);
+        $car->brand = $request->input('brand');
+        $car->model = $request->input('model');
+        $car->year = $request->input('year');
+        $car->maxSpeed = $request->input('maxSpeed');
+        $car->isAutomatic = $request->input('isAutomatic');
+        $car->engine = $request->input('engine');
+        $car->numberOfDoors = $request->input('numberOfDoors');
+        $car->save();
+
+        return $car;
     }
 
     /**
@@ -79,6 +101,8 @@ class CarsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $car = Car::find($id);
+        $car->delete();
+        return new JsonResponse(true);
     }
 }
