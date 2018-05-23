@@ -54,14 +54,15 @@ class CarsController extends Controller
             'brand' => 'required|min:2',
             'model' => 'required|min:2',
             'year' => 'required',
-            'maxSpeed' => 'between:20,300',
+            'maxSpeed' => 'integer|between:20,300',
             'isAutomatic' => 'required',
             'engine' => 'required',
-            'numberOfDoors' => 'required|between:2,5'
+            'numberOfDoors' => 'required|between:2,5|integer'
            
         ]);
+        
         if ($validator->fails()) {
-            return new JsonResponse("Fail:check the entered parameters!");
+            return new JsonResponse($validator->errors(), 406);
         }
 
 
@@ -109,7 +110,24 @@ class CarsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    { 
+         $validator = Validator::make($request->all(), [
+        'brand' => 'required|min:2',
+        'model' => 'required|min:2',
+        'year' => 'required',
+        'maxSpeed' => 'integer|between:20,300',
+        'isAutomatic' => 'required',
+        'engine' => 'required',
+        'numberOfDoors' => 'required|between:2,5|integer'
+       
+    ]);
+    
+    if ($validator->fails()) {
+        return new JsonResponse($validator->errors(), 406);
+    }
+
+
+
         $car = Car::find($id);
         $car->brand = $request->input('brand');
         $car->model = $request->input('model');
